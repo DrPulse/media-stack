@@ -1,0 +1,101 @@
+version: "3"
+services:
+
+
+  deluge:
+    container_name: deluge
+    image: lscr.io/linuxserver/deluge:latest
+    restart: "unless-stopped"
+    networks:
+      - media_network
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - deluge-config:/config
+      - /data/torrents:/data/torrents
+    ports:
+      - 8112:8112
+      - 58846:58846
+      - 58846:58846/udp
+
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr:4.2.4.6635-ls153
+    restart: "unless-stopped"
+    networks:
+      - media_network
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    ports:
+      - 7878:7878
+    volumes:
+      - radarr-config:/config
+      - /data:/data
+
+  sonarr:
+    container_name: sonarr
+    image: lscr.io/linuxserver/sonarr:v4-4.0.0.141-ls6
+    restart: unless-stopped
+    networks:
+      - media_network
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - sonarr-config:/config
+      - /data:/data
+    ports:
+      - 8989:8989
+
+  jackett:
+    container_name: jackett
+    image: lscr.io/linuxserver/jackett:v0.20.2093-ls77
+    restart: unless-stopped
+    networks:
+      - media_network
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - jackett-config:/config
+      - jackett-blackhole:/downloads
+    ports:
+      - 9117:9117
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:10.8.5-1-ls181
+    container_name: jellyfin
+    restart: unless-stopped
+    networks:
+      - media_network
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - jellyfin-config:/config
+      - /data:/data
+    ports:
+      - 8096:8096
+      - 7359:7359/udp
+      - 8920:8920
+
+
+volumes:
+  radarr-config:
+  sonarr-config:
+  jackett-config:
+  jackett-blackhole:
+  jellyfin-config:
+  deluge-config:
+
+
+networks:
+  media_network:
+    external: true
