@@ -7,10 +7,10 @@ Possible changes : Prowlarr instead of Jackett and Plex instead of Jellyfin.
 
 This stack is supossed to come with different flavors, with vpn and traefik.
 
-- [test](docker-compose_base.yml) : Completed, uses ports, no vpn and no reverse proxy
-- [test](docker-compose_base-vpn.yml) : Not completed, uses ports, vpn and no reverse proxy
-- [test](docker-compose_traefik.yml) : Not completed, uses reverse proxy and no vpn
-- [test](docker-compose_traefik-vpn.yml) : Not completed, uses reverse proxy and vpn
+- [base](docker-compose_base.yml) : Completed, uses ports, no vpn and no reverse proxy
+- [base + vpn](docker-compose_base-vpn.yml) : Not completed, uses ports, vpn and no reverse proxy
+- [traefik](docker-compose_traefik.yml) : Not completed, uses reverse proxy and no vpn
+- [traefik + vpn](docker-compose_traefik-vpn.yml) : Not completed, uses reverse proxy and vpn
 
 ## File structure on the host:
 
