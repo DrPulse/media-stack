@@ -59,25 +59,6 @@ services:
       - "traefik.http.routers.sonarr.entrypoints=websecure"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.hugotest.lan`)"
 
-  jackett:
-    container_name: jackett
-    image: lscr.io/linuxserver/jackett:v0.20.2093-ls77
-    restart: unless-stopped
-    networks: 
-      - proxy
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=CEST
-    volumes:
-      - jackett-config:/config
-      - jackett-blackhole:/downloads
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
-      - "traefik.http.routers.jackett.entrypoints=websecure"
-      - "traefik.http.routers.jackett.rule=Host(`jackett.hugotest.lan`)"
-
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:10.8.5-1-ls181
     container_name: jellyfin
@@ -120,12 +101,32 @@ services:
       - "traefik.http.routers.plex.rule=Host(`plex.hugotest.lan`)"
       - "traefik.http.services.plex.loadbalancer.server.port=32400"
 
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    restart: unless-stopped
+    networks: 
+      - proxy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - prowlarr-config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.prowlarr.entrypoints=websecure"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.hugotest.lan`)"
+
+
 volumes:
   deluge-config:
   jackett-blackhole:
   jackett-config:
   jellyfin-config:
   plex-config:
+  prowlarr-config:
   radarr-config:
   sonarr-config:
 

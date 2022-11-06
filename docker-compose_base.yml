@@ -93,6 +93,19 @@ services:
       - /data/media/tv:/tv
       - /data/media/films:/movies
 
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    ports:
+      - 9696:9696
+    volumes:
+      - prowlarr-config:/config
+    
 
 volumes:
   deluge-config:
@@ -100,5 +113,6 @@ volumes:
   jackett-config:
   jellyfin-config:
   plex-config:
+  prowlarr-config:
   radarr-config:
   sonarr-config:

@@ -2,8 +2,8 @@
 
 **[WIP]**
 
-Repository for multiple docker-compose files for media stack composed of : Radarr, Sonarr, Deluge, Jackett, Jellyfin, Plex.
-Possible changes : Prowlarr instead of Jackett and Plex instead of Jellyfin. Integration of Overseerr.
+Repository for multiple docker-compose files for media stack composed of : Radarr, Sonarr, Prowlarr, Deluge, Jellyfin, Plex.
+Possible changes : Plex instead of Jellyfin. Integration of Overseerr.
 
 This stack is supossed to come with different flavors, with vpn and traefik.
 
