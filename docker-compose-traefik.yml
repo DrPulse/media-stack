@@ -1,0 +1,135 @@
+version: "3"
+services:
+
+
+  deluge:
+    container_name: deluge
+    image: lscr.io/linuxserver/deluge:latest
+    restart: "unless-stopped"
+    networks: 
+      - proxy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - deluge-config:/config
+      - /data/torrents:/data/torrents
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.deluge.entrypoints=websecure"
+      - "traefik.http.routers.deluge.rule=Host(`deluge.hugotest.lan`)"
+
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr:4.2.4.6635-ls153
+    restart: "unless-stopped"
+    networks: 
+      - proxy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - radarr-config:/config
+      - /data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.radarr.entrypoints=websecure"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.hugotest.lan`)"
+
+  sonarr:
+    container_name: sonarr
+    image: lscr.io/linuxserver/sonarr:v4-4.0.0.141-ls6
+    restart: unless-stopped
+    networks: 
+      - proxy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - sonarr-config:/config
+      - /data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.sonarr.entrypoints=websecure"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.hugotest.lan`)"
+
+  jackett:
+    container_name: jackett
+    image: lscr.io/linuxserver/jackett:v0.20.2093-ls77
+    restart: unless-stopped
+    networks: 
+      - proxy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - jackett-config:/config
+      - jackett-blackhole:/downloads
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.jackett.entrypoints=websecure"
+      - "traefik.http.routers.jackett.rule=Host(`jackett.hugotest.lan`)"
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:10.8.5-1-ls181
+    container_name: jellyfin
+    restart: unless-stopped
+    networks: 
+      - proxy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - jellyfin-config:/config
+      - /data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.jellyfin.entrypoints=websecure"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.hugotest.lan`)"
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    restart: unless-stopped
+    networks: 
+      - proxy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - TZ=CEST
+      #- PLEX_CLAIM=""
+    volumes:
+      - plex-config:/config
+      - /data/media/tv:/tv
+      - /data/media/films:/movies
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.plex.entrypoints=websecure"
+      - "traefik.http.routers.plex.rule=Host(`plex.hugotest.lan`)"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
+
+volumes:
+  deluge-config:
+  jackett-blackhole:
+  jackett-config:
+  jellyfin-config:
+  plex-config:
+  radarr-config:
+  sonarr-config:
+
+
+networks:
+  proxy: 
+    external: true

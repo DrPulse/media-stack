@@ -2,15 +2,15 @@
 
 **[WIP]**
 
-Repository for multiple docker-compose files for media stack composed of : Radarr, Sonarr, Deluge, Jackett, Jellyfin.
-Possible changes : Prowlarr instead of Jackett and Plex instead of Jellyfin.
+Repository for multiple docker-compose files for media stack composed of : Radarr, Sonarr, Deluge, Jackett, Jellyfin, Plex.
+Possible changes : Prowlarr instead of Jackett and Plex instead of Jellyfin. Integration of Overseerr.
 
 This stack is supossed to come with different flavors, with vpn and traefik.
 
 - [base](docker-compose_base.yml) : Completed, uses ports, no vpn and no reverse proxy
-- [base + vpn](docker-compose_base-vpn.yml) : Not completed, uses ports, vpn and no reverse proxy
-- [traefik](docker-compose_traefik.yml) : Not completed, uses reverse proxy and no vpn
-- [traefik + vpn](docker-compose_traefik-vpn.yml) : Not completed, uses reverse proxy and vpn
+- [base + vpn](docker-compose-base-vpn.yml) : Not completed, uses ports, vpn and no reverse proxy
+- [traefik](docker-compose-traefik.yml) : Completed, uses reverse proxy and no vpn
+- [traefik + vpn](docker-compose-traefik-vpn.yml) : Not completed, uses reverse proxy and vpn
 
 ## File structure on the host:
 
@@ -23,6 +23,8 @@ data
 
 ```
 
+The user need to have write and read permission on the data directory and sub directories.
+
 ## Deluge configuration
 
 - Plugins : Label
@@ -31,12 +33,20 @@ data
 
 ## Radarr / Sonarr configuration
 
+To connect the indexors and download client, the url must :
+
+- Be in http
+- Use either the subdomain, the ip address or the container name of the service
+
+Parameters :
+
 - Rename Movies : Yes
 - Delete empty folders : Yes
 - Unmonitor Deleted Movies : Yes
 - Root Folders : /data/media/{films/tv}
 - Connect Jackett
 - Connect Deluge
+
 
 ## Jellyfin configuration
 

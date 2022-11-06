@@ -6,8 +6,6 @@ services:
     container_name: deluge
     image: lscr.io/linuxserver/deluge:latest
     restart: "unless-stopped"
-    networks:
-      - media_network
     environment:
       - PUID=1000
       - PGID=1000
@@ -24,8 +22,6 @@ services:
     container_name: radarr
     image: lscr.io/linuxserver/radarr:4.2.4.6635-ls153
     restart: "unless-stopped"
-    networks:
-      - media_network
     environment:
       - PUID=1000
       - PGID=1000
@@ -40,8 +36,6 @@ services:
     container_name: sonarr
     image: lscr.io/linuxserver/sonarr:v4-4.0.0.141-ls6
     restart: unless-stopped
-    networks:
-      - media_network
     environment:
       - PUID=1000
       - PGID=1000
@@ -56,8 +50,6 @@ services:
     container_name: jackett
     image: lscr.io/linuxserver/jackett:v0.20.2093-ls77
     restart: unless-stopped
-    networks:
-      - media_network
     environment:
       - PUID=1000
       - PGID=1000
@@ -72,8 +64,6 @@ services:
     image: lscr.io/linuxserver/jellyfin:10.8.5-1-ls181
     container_name: jellyfin
     restart: unless-stopped
-    networks:
-      - media_network
     environment:
       - PUID=1000
       - PGID=1000
@@ -86,16 +76,29 @@ services:
       - 7359:7359/udp
       - 8920:8920
 
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - TZ=CEST
+      #- PLEX_CLAIM=""
+    ports:
+      - 32400:32400
+    volumes:
+      - plex-config:/config
+      - /data/media/tv:/tv
+      - /data/media/films:/movies
+
 
 volumes:
+  deluge-config:
+  jackett-blackhole:
+  jackett-config:
+  jellyfin-config:
+  plex-config:
   radarr-config:
   sonarr-config:
-  jackett-config:
-  jackett-blackhole:
-  jellyfin-config:
-  deluge-config:
-
-
-networks:
-  media_network:
-    external: true
